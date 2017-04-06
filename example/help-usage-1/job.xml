@@ -1,0 +1,12 @@
+<job>
+ <recipeSet>
+  <recipe>
+   <task name="/example/test/help-usage-1" keepchanges="yes">
+    <fetch url="https://github.com/mmathesius/test/archive/master.tar.gz#example/help-usage-1" />
+    <params>
+     <param name="foo" value="bar"/>
+    </params>
+   </task>
+  </recipe>
+ </recipeSet>
+</job>
