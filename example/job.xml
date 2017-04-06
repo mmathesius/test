@@ -1,0 +1,18 @@
+<job>
+ <recipeSet>
+  <recipe>
+   <task name="/example/test/help-usage-1">
+    <fetch url="https://github.com/mmathesius/test/archive/master.tar.gz#example/help-usage-1" />
+    <params>
+     <param name="ENV_VAR" value="val"/>
+    </params>
+   </task>
+   <task name="/example/test/help-usage-2">
+    <fetch url="https://github.com/mmathesius/test/archive/master.tar.gz#example/help-usage-2" />
+    <params>
+     <param name="ENV_VAR" value="val"/>
+    </params>
+   </task>
+  </recipe>
+ </recipeSet>
+</job>
