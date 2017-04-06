@@ -1,4 +1,5 @@
 [General]
+description=example test
 
 [restraint]
 entry_point=./runtest.sh
