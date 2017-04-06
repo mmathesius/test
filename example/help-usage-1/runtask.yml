@@ -11,6 +11,7 @@ input:
 environment:
     rpm:
         - make
+        - beakerlib
 
 actions:
     - name: download the build
@@ -23,6 +24,12 @@ actions:
     - name: install the build
       shell:
           - dnf install -y ${workdir}/rpms/*.rpm
+
+    - name: install and start restraint
+      shell:
+          - dnf copr -y enable bpeck/restraint
+          - dnf install -y restraint restraint-client restraint-rhts
+          - systemctl start restraintd.service
 
     - name: run test
       shell:
