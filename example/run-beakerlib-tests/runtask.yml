@@ -1,0 +1,36 @@
+---
+name: run-beakerlib-tests
+desc: "Run beakerlib tests."
+maintainer: merlinm
+
+input:
+    args:
+        - koji_build
+        - arch
+
+environment:
+    rpm:
+        - make
+        - beakerlib
+
+actions:
+    - name: download the build
+      koji:
+          action: download
+          koji_build: ${koji_build}
+          arch: $arch
+          target_dir: ${workdir}/rpms
+
+    - name: install the build
+      shell:
+          - dnf install -y ${workdir}/rpms/*.rpm
+
+    - name: install and start restraint
+      shell:
+          - dnf copr -y enable bpeck/restraint
+          - dnf install -y restraint restraint-client restraint-rhts
+          - systemctl start restraintd.service
+
+    - name: use retraint to run
+      shell:
+          - restraint --host localhost --job job.xml
