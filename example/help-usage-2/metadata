@@ -2,4 +2,5 @@
 description=example test
 
 [restraint]
-entry_point=./runtest.sh
+#entry_point=./runtest.sh
+entry_point=make run

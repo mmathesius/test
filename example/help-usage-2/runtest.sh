@@ -4,6 +4,8 @@ PACKAGE=bash
 
 . /usr/bin/rhts-environment.sh
 
+env
+
 # Assume the test will pass.
 result=PASS
 
