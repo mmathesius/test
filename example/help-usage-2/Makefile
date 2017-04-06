@@ -1,5 +1,7 @@
 .PHONY: all install download clean
 
+export TEST=/misc/bash/example/help-usage-2
+
 BUILT_FILES=
 
 FILES=$(METADATA) runtest.sh Makefile
