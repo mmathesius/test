@@ -1,0 +1,29 @@
+---
+name: help-usage-1
+desc: "Tests the basic functionality of '--help' option to confirm it generates a usage message."
+maintainer: merlinm
+
+input:
+    args:
+        - koji_build
+        - arch
+
+environment:
+    rpm:
+        - make
+
+actions:
+    - name: download the build
+      koji:
+          action: download
+          koji_build: ${koji_build}
+          arch: $arch
+          target_dir: ${workdir}/rpms
+
+    - name: install the build
+      shell:
+          - dnf install -y ${workdir}/rpms/*.rpm
+
+    - name: run test
+      shell:
+          - ./runtest.sh
