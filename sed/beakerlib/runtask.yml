@@ -34,8 +34,10 @@ actions:
     - name: set up legacy beakerlib symlink
       shell:
           - mkdir -p /usr/lib/beakerlib
-          - ln -s /usr/share/beakerlib/beakerlib.sh /usr/lib/beakerlib/beakerlib.sh
+          - ignorereturn:
+              - ln -s /usr/share/beakerlib/beakerlib.sh /usr/lib/beakerlib/beakerlib.sh
 
     - name: use retraint to run the tests
       shell:
           - restraint --host localhost --job job.xml
+      export: test_output
