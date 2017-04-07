@@ -1,0 +1,67 @@
+---
+name: beakerlib
+desc: "Run beakerlib tests."
+maintainer: merlinm
+
+input:
+    args:
+        - koji_build
+        - arch
+
+environment:
+    rpm:
+        - make
+        - beakerlib
+        # libacl-devel _should_ be installed by "selftest" script
+        - libacl-devel
+
+actions:
+    - name: download the build
+      koji:
+          action: download
+          koji_build: ${koji_build}
+          arch: $arch
+          # the "selftest" test requires the source RPM
+          src: True
+          target_dir: ${workdir}/rpms
+
+    - name: set repo_dir to directory to use for local RPM repo
+      shell:
+          #- echo -n ${workdir}/local_repo
+          - echo -n /var/tmp/local_repo
+      export: repo_dir
+
+    - name: create repo directory and move source RPM to it
+      shell:
+          - mkdir -p ${repo_dir}
+          - mv ${workdir}/rpms/*.src.rpm ${repo_dir}/
+
+    - name: install the build RPMs and move them to repo directory
+      shell:
+          - dnf install -y ${workdir}/rpms/*.rpm
+          - mv ${workdir}/rpms/*.rpm ${repo_dir}/
+
+    - name: create actual repo
+      createrepo:
+          repodir: ${repo_dir}
+
+    - name: enable the created repo
+      shell:
+          - dnf config-manager --add-repo ${repo_dir}/
+
+    - name: install and start restraint
+      shell:
+          - dnf copr -y enable bpeck/restraint
+          - dnf install -y restraint restraint-client restraint-rhts
+          - systemctl start restraintd.service
+
+    - name: set up legacy beakerlib symlink
+      shell:
+          - mkdir -p /usr/lib/beakerlib
+          - ignorereturn:
+              - ln -s /usr/share/beakerlib/beakerlib.sh /usr/lib/beakerlib/beakerlib.sh
+
+    - name: use retraint to run the tests
+      shell:
+          - restraint --host localhost --job job.xml
+      export: test_output
