@@ -1,0 +1,9 @@
+Test Name: bz217720-uppercase-operand - Bugzilla(s) 217720
+Author: Petr Muller <pmuller@redhat.com>
+Location: /CoreOS/sed/Regression/bz217720-uppercase-operand
+
+Short Description: Verifiies that sed correctly processes an 'u' operand, which returns uppercase of matched character
+
+
+Long Description:
+Verifiies that sed correctly processes an 'u' operand, which returns uppercase of matched character

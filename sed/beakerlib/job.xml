@@ -1,0 +1,12 @@
+<job>
+ <recipeSet>
+  <recipe>
+   <task name="/sed/beakerlib/selftest">
+    <fetch url="https://github.com/mmathesius/test/archive/master.tar.gz#sed/beakerlib/selftest" />
+   </task>
+   <task name="/sed/beakerlib/bz217720-uppercase-operand">
+    <fetch url="https://github.com/mmathesius/test/archive/master.tar.gz#sed/beakerlib/bz217720-uppercase-operand" />
+   </task>
+  </recipe>
+ </recipeSet>
+</job>
