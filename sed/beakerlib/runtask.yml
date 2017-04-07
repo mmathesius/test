@@ -12,6 +12,7 @@ environment:
     rpm:
         - make
         - beakerlib
+        #- libacl-devel
 
 actions:
     - name: download the build
@@ -19,11 +20,22 @@ actions:
           action: download
           koji_build: ${koji_build}
           arch: $arch
+          # the "selftest" test requires the source RPM
+          src: True
           target_dir: ${workdir}/rpms
+
+    - name: move the source RPM aside
+      shell:
+          - mkdir -p ${workdir}/srpms
+          - mv ${workdir}/rpms/*.src.rpm ${workdir}/srpms/
 
     - name: install the build
       shell:
           - dnf install -y ${workdir}/rpms/*.rpm
+
+    - name: install the source
+      shell:
+          - rpm -ivh ${workdir}/srpms/*.rpm
 
     - name: install and start restraint
       shell:
