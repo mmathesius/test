@@ -27,8 +27,7 @@ actions:
 
     - name: set repo_dir to directory to use for local RPM repo
       shell:
-          #- echo -n ${workdir}/local_repo
-          - echo -n /var/tmp/local_repo
+          - echo -n ${workdir}/local_repo
       export: repo_dir
 
     - name: create repo directory
@@ -74,6 +73,12 @@ actions:
 
     - name: use retraint to run the tests
       shell:
+          - mkdir ${artifactsdir}/rstrnt-run
+          - cp job.xml ${artifactsdir}/rstrnt-run/
           - ignorereturn:
-              - restraint --host localhost --job job.xml
+              - cd ${artifactsdir}/rstrnt-run ; restraint --host localhost --job job.xml
       export: test_output
+
+    - name: clean up the repo config created earlier
+      shell:
+          - rm $$( grep -l -e "${repo_dir}" /etc/yum.repos.d/* )
